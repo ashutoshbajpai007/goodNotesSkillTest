@@ -1,12 +1,12 @@
 name: CI Load Test
 
 on:
-  push:
-    branches:
-      - main
-  # pull_request:
+  # push:
   #   branches:
   #     - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   load-test:
@@ -17,6 +17,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Installed dependenciesat runtime for this workflow.
+          # For production use, dependencies should be baked into the base image.
+          # Updates are handled via the build-image workflow triggered by PR labels.
+          
           # Install kubectl (using fixed version for reliability)
           curl -LO https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubectl
           chmod +x kubectl
@@ -59,9 +63,15 @@ jobs:
 
       - name: Generate Summary
         run: |
+          # Generates a basic workflow summary.
+          # In a real project, this can be enhanced to include error details so users
+          # can quickly identify failures without inspecting individual step logs.
           chmod +x scripts/generate-summary.sh
           ./scripts/generate-summary.sh
 
+          
+          # Posts the workflow results as a comment on the pull request
+          # using a GitHub-approved Marketplace action.
       - name: Post results to PR
         uses: peter-evans/create-or-update-comment@v3
         if: github.event_name == 'pull_request'
