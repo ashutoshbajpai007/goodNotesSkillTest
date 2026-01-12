@@ -1,0 +1,15 @@
+services:
+  foo:
+    text: "foo"
+    replicas: 2
+  bar:
+    text: "bar"
+    replicas: 2
+
+ingress:
+  enabled: true
+  hosts:
+    - host: foo.localhost
+      service: foo-service
+    - host: bar.localhost
+      service: bar-service

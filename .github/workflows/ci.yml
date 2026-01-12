@@ -1,0 +1,62 @@
+name: CI Load Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          # Install kubectl
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+          # Install KinD
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/
+
+          # Install Helm
+          curl https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz -o helm.tar.gz
+          tar -zxvf helm.tar.gz
+          sudo mv linux-amd64/helm /usr/local/bin/helm
+
+          # Install hey for load testing
+          wget https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64
+          chmod +x hey_linux_amd64
+          sudo mv hey_linux_amd64 /usr/local/bin/hey
+
+      - name: Create KinD cluster
+        run: |
+          chmod +x scripts/create-kind-cluster.sh
+          ./scripts/create-kind-cluster.sh
+
+      - name: Deploy services
+        run: |
+          chmod +x scripts/deploy-services.sh
+          ./scripts/deploy-services.sh
+
+      - name: Wait for readiness
+        run: |
+          chmod +x scripts/wait-for-readiness.sh
+          ./scripts/wait-for-readiness.sh
+
+      - name: Run load test
+        run: |
+          chmod +x scripts/run-load-test.sh
+          ./scripts/run-load-test.sh
+
+      - name: Post results to PR
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.number }}
+          body-path: results.md
+          token: ${{ secrets.GITHUB_TOKEN }}
