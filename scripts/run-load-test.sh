@@ -10,6 +10,12 @@ RESULTS_FILE=${3:-results.md}
 # Update /etc/hosts
 echo "127.0.0.1 foo.localhost bar.localhost" | sudo tee -a /etc/hosts
 
+# Test routing before load test
+echo "Testing routing to foo.localhost:"
+curl -H "Host: foo.localhost" http://localhost/ || echo "Routing test failed for foo"
+echo "Testing routing to bar.localhost:"
+curl -H "Host: bar.localhost" http://localhost/ || echo "Routing test failed for bar"
+
 # Run load tests
 hey -n $REQUESTS -c $CONCURRENCY -H "Host: foo.localhost" http://localhost/ > foo_results.txt
 hey -n $REQUESTS -c $CONCURRENCY -H "Host: bar.localhost" http://localhost/ > bar_results.txt

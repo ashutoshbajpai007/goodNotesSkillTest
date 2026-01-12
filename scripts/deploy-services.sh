@@ -26,3 +26,7 @@ sleep 5
 
 # Install echo-app via Helm (now safe, as webhook is ready)
 helm install echo-app $HELM_CHART_PATH
+
+# Log the Ingress configuration for verification
+echo "Ingress configuration:"
+kubectl get ingress -o yaml
