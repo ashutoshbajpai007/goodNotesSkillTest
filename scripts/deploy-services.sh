@@ -9,8 +9,10 @@ HELM_CHART_PATH=${1:-./helm/echo-chart}
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
-# Install ingress-nginx via Helm
+# Install ingress-nginx via Helm in its own namespace
 helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  --create-namespace \
   --set-string controller.nodeSelector.ingress-ready=true \
   --set controller.tolerations[0].key=node-role.kubernetes.io/master \
   --set controller.tolerations[0].effect=NoSchedule \
