@@ -57,6 +57,11 @@ jobs:
           chmod +x scripts/run-load-test.sh
           ./scripts/run-load-test.sh
 
+      - name: Generate Summary
+        run: |
+          chmod +x scripts/generate-summary.sh
+          ./scripts/generate-summary.sh
+
       - name: Post results to PR
         uses: peter-evans/create-or-update-comment@v3
         if: github.event_name == 'pull_request'
