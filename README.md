@@ -2,6 +2,7 @@
 
 This project implements a CI workflow that performs load testing on a Kubernetes cluster provisioned with KinD for each pull request to the main branch.
 
+# time taken: Around 1.5 hours
 ## Overview
 
 The CI workflow does the following:
