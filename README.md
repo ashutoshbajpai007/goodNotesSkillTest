@@ -24,7 +24,7 @@ The CI workflow does the following:
 - **Load Testing**: hey (HTTP load generator)
 - **Services**: hashicorp/http-echo
 
-## Workflow Details
+## Workflow Details.
 
 ### KinD Cluster Configuration
 - 1 control-plane node with ingress-ready label
