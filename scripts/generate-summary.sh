@@ -5,11 +5,11 @@
 
 RESULTS_FILE=${1:-results.md}
 
-# Function to check if a file exists (indicating step success)
+# Function to check if a step succeeded (using files or commands)
 check_step() {
   local step_name="$1"
-  local file_indicator="$2"
-  if [[ -f "$file_indicator" ]]; then
+  local indicator="$2"
+  if [[ -n "$indicator" && -f "$indicator" ]] || [[ -z "$indicator" && "$step_name" == "Deploy services" && helm list -q | grep -q echo-app ]] || [[ -z "$indicator" && "$step_name" == "Wait for readiness" && kubectl get deployment foo-deployment -o jsonpath='{.status.availableReplicas}' >/dev/null 2>&1 ]]; then
     echo "- ✅ $step_name: Completed"
   else
     echo "- ❌ $step_name: Failed or not reached"
