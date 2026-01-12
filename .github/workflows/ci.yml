@@ -1,9 +1,12 @@
 name: CI Load Test
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   load-test:
@@ -56,6 +59,7 @@ jobs:
 
       - name: Post results to PR
         uses: peter-evans/create-or-update-comment@v3
+        if: github.event_name == 'pull_request'
         with:
           issue-number: ${{ github.event.number }}
           body-path: results.md
