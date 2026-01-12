@@ -11,7 +11,7 @@ helm repo update
 
 # Install ingress-nginx via Helm
 helm install ingress-nginx ingress-nginx/ingress-nginx \
-  --set controller.nodeSelector.ingress-ready="true" \
+  --set-string controller.nodeSelector.ingress-ready=true \
   --set controller.tolerations[0].key=node-role.kubernetes.io/master \
   --set controller.tolerations[0].effect=NoSchedule \
   --set controller.tolerations[0].operator=Exists \
