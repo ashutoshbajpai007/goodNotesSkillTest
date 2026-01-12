@@ -1,9 +1,6 @@
 name: CI Load Test
 
 on:
-  # push:
-  #   branches:
-  #     - main
   pull_request:
     branches:
       - main
@@ -14,6 +11,7 @@ permissions:
 
 jobs:
   load-test:
+    name: load-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
