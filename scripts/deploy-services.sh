@@ -17,5 +17,8 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
   --set controller.tolerations[0].operator=Exists \
   --set controller.service.type=LoadBalancer
 
-# Install echo-app via Helm
+# Wait for ingress-nginx controller to be ready before proceeding
+kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=300s
+
+# Install echo-app via Helm (now safe, as webhook is ready)
 helm install echo-app $HELM_CHART_PATH
