@@ -1,9 +1,6 @@
 name: CI Load Test
 
 on:
-  # push:
-  #   branches:
-  #     - main
   pull_request:
     branches:
       - main
@@ -14,6 +11,7 @@ permissions:
 
 jobs:
   load-test:
+    name: load-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # Installed dependenciesat runtime for this workflow.
+          # Installed dependenciesat runtime for this workflow
           # For production use, dependencies should be baked into the base image.
           # Updates are handled via the build-image workflow triggered by PR labels.
           # Will discuss in second round
