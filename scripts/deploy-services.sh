@@ -14,7 +14,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
   --namespace ingress-nginx \
   --create-namespace \
   --set controller.service.type=NodePort \
-  --set controller.service.nodePorts.http=80
+  --set controller.service.nodePorts.http=30080
 
 # Wait for ingress-nginx controller to be ready before proceeding
 kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=300s
