@@ -24,6 +24,7 @@ jobs:
           # Installed dependenciesat runtime for this workflow
           # For production use, dependencies should be baked into the base image.
           # Updates are handled via the build-image workflow triggered by PR labels.
+          # Will discuss in second round
           
           # Install kubectl (using fixed version for reliability)
           curl -LO https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubectl
@@ -70,12 +71,15 @@ jobs:
           # Generates a basic workflow summary.
           # In a real project, this can be enhanced to include error details so users
           # can quickly identify failures without inspecting individual step logs.
+          # Will discuss in second round
           chmod +x scripts/generate-summary.sh
           ./scripts/generate-summary.sh
 
           
           # Posts the workflow results as a comment on the pull request
           # using a GitHub-approved Marketplace action.
+          # In a real project , will use a ReleasePlease for tag generation instead of comment on PR.
+          # Will discuss in second round
       - name: Post results to PR
         uses: peter-evans/create-or-update-comment@v3
         if: github.event_name == 'pull_request'
